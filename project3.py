@@ -106,6 +106,34 @@ class Pipe:
             topMask = pygame.mask.fromSurface(self.pipeTop)
             bottomMask = pygame.mask.fromSurface(self.pipeBottom)
 
+            topOffset = (self.x - bird.x, self.top - round(bird.y))
+            bottomOffset = (self.x-bird.x, self.bottom - round(bird.y))
+
+            bPoint = birdMask.overlap(bottomMask, bottomOffset)
+            tPoint = birdMask.overlap(topMask, topOffset)
+
+            if tPoint or bPoint:
+                return True
+            return False
+        
+class Base:
+    vel = 5
+    width = baseImg.get_width()
+    img = baseImg
+
+    def __init__(self,y):
+        self.y = y
+        self.x1 = 0
+        self.x2 = self.width
+
+    def move(self):
+        self.x1 -= self.vel
+        self.x2 -= self.vel
+        if self.x1 + self.width < 0:
+            self.x1 = self.x2 + self.width
+
+        if self.x2 + self.width < 0:
+            self.x2 = self.x1 + self.width
             
 
 def drawWindow(win, bird):
